@@ -1,3 +1,6 @@
+import 'package:fadba/screens/components/Textfield_button_widget.dart';
+import 'package:fadba/screens/components/Textfield_widget.dart';
+import 'package:fadba/screens/components/Textfield_widget_password.dart';
 import 'package:fadba/values/Custom_color.dart';
 import 'package:flutter/material.dart';
 
@@ -11,27 +14,27 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              //TELA COM IMAGEM E LOGO DA FADBA
-              width: double.infinity,
-              height: height * 0.2,
-              child: DecoracaoDestaque(),
-            ),
-            SizedBox(
-              //TELA COM FORMULARIO
-              width: double.infinity,
-              child: Form(
-                  child: Column(
-                children: [
-                  MyCustomForm(),
-                ],
-              )),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          SizedBox(
+            //TELA COM IMAGEM E LOGO DA FADBA
+            width: double.infinity,
+            height: height * 0.2,
+            child: DecoracaoDestaque(),
+          ),
+          SizedBox(
+            //TELA COM FORMULARIO
+            width: double.infinity,
+            child: Form(
+                child: Column(
+              children: [
+                MyCustomForm(
+                  width: width,
+                ),
+              ],
+            )),
+          )
+        ],
       ),
     );
   }
@@ -61,7 +64,9 @@ class DecoracaoDestaque extends StatelessWidget {
 }
 
 class MyCustomForm extends StatefulWidget {
-  MyCustomForm({Key? key}) : super(key: key);
+  const MyCustomForm({Key? key, required this.width}) : super(key: key);
+
+  final width;
 
   @override
   State<MyCustomForm> createState() => _MyCustomFormState();
@@ -70,37 +75,57 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
 
+  GlobalKey get getFormKey {
+    return _formKey;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           SizedBox(
-            width: width * 0.8,
-            child: MyCustomFormEmail(width: width),
+            width: widget.width * 0.8,
+            child: const TextfieldWidget(
+                hinText: 'email',
+                prefixIcon: Icons.email,
+                sufixIcon: Icons.close,
+                obscureText: false,
+                textInputType: TextInputType.emailAddress),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           SizedBox(
-            width: width * 0.8,
-            child: MyCustomFormPassword(width: width),
-          ),
-          SizedBox(height: 20.0),
+              width: widget.width * 0.8,
+              child: const TextfieldPasswordWidget()),
+          const SizedBox(height: 20.0),
           Center(
-            child: Text(
-              "Esqueci a senha?",
-              style: TextStyle(color: CustomColor().getCorPadraoAzul),
+            child: TextButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Esqueci a senha"),
+                ));
+              },
+              child: Text("Esqueci a senha?",
+                  style: TextStyle(color: CustomColor().getCorPadraoAzul)),
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
+          TextfieldButtonWidget(
+            width: widget.width,
+            formKey: getFormKey,
+            nameButton: 'Login',
+            isFill: true,
+            padromColor: CustomColor().getCorPadraoAzul,
+          )
+          /*
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: CustomColor().getCorPadraoAzul,
                 fixedSize: Size(width * 0.8, 50),
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 )),
             onPressed: () {
@@ -112,140 +137,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
             },
             child: const Text('Login'),
           ),
+          */
         ],
-      ),
-    );
-  }
-}
-
-class MyCustomFormPassword extends StatefulWidget {
-  MyCustomFormPassword({
-    Key? key,
-    required this.width,
-  }) : super(key: key);
-
-  final double width;
-
-  @override
-  State<MyCustomFormPassword> createState() => _MyCustomFormPasswordState();
-}
-
-class _MyCustomFormPasswordState extends State<MyCustomFormPassword> {
-  bool _securityText = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-            )
-          ]),
-      child: TextFormField(
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: _securityText,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(10),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          prefixIcon: Icon(
-            Icons.key,
-            color: CustomColor().getCorPadraoAzul,
-          ),
-          suffix: IconButton(
-              icon: Icon(_securityText
-                  ? Icons.remove_red_eye_rounded
-                  : Icons.remove_red_eye_outlined),
-              onPressed: () => setState(() => _securityText = !_securityText)),
-          hintText: 'Senha',
-          hintStyle: TextStyle(color: CustomColor().getCorPadraoAzul),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'erro';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-}
-
-class MyCustomFormEmail extends StatefulWidget {
-  const MyCustomFormEmail({
-    Key? key,
-    required this.width,
-  }) : super(key: key);
-
-  final double width;
-
-  @override
-  State<MyCustomFormEmail> createState() => _MyCustomFormEmailState();
-}
-
-class _MyCustomFormEmailState extends State<MyCustomFormEmail> {
-  final _myController = TextEditingController();
-
-  @override
-  void dispose() {
-    _myController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-            )
-          ]),
-      child: TextFormField(
-        controller: _myController,
-        keyboardType: TextInputType.emailAddress,
-        obscureText: false,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(10),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          prefixIcon: Icon(
-            Icons.email,
-            color: CustomColor().getCorPadraoAzul,
-          ),
-          suffix: IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () => setState(() => _myController.clear()),
-          ),
-          hintText: 'Email',
-          hintStyle: TextStyle(color: CustomColor().getCorPadraoAzul),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Erro';
-          }
-          return null;
-        },
       ),
     );
   }
