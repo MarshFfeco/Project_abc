@@ -3,4 +3,5 @@
 A new Flutter project.
 
 - Tela de Login com validação
-- Version 0.0.3
+- Tela de Cadastro com validação
+- Version 0.0.4

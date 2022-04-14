@@ -28,7 +28,7 @@ class _MyCustomFormLoginState extends State<MyCustomFormLogin> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const SizedBox(height: 80.0),
+          const SizedBox(height: 60.0),
           SizedBox(
             width: widget.width * 0.8,
             child: const TextfieldWidget(
@@ -42,23 +42,10 @@ class _MyCustomFormLoginState extends State<MyCustomFormLogin> {
             width: widget.width * 0.8,
             child: const TextfieldPasswordWidget(
               hinText: "Senha",
-              isSignup: false,
+              isConfirm: false,
             ),
           ),
-          SizedBox(
-            child: Center(
-              child: TextButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Esqueci a senha"),
-                  ));
-                },
-                child: Text("Esqueci a senha?",
-                    style: TextStyle(color: CustomColor().getCorPadraoAzul)),
-              ),
-            ),
-          ),
-          const SizedBox(height: 50.0),
+          const SizedBox(height: 25.0),
           SizedBox(
             width: widget.width * 0.8,
             child: TextfieldButtonWidget(
@@ -113,7 +100,7 @@ class _MyCustomFormSignupState extends State<MyCustomFormSignup> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const SizedBox(height: 80.0),
+          const SizedBox(height: 60.0),
           SizedBox(
             width: widget.width * 0.8,
             child: const TextfieldWidget(
@@ -127,18 +114,10 @@ class _MyCustomFormSignupState extends State<MyCustomFormSignup> {
             width: widget.width * 0.8,
             child: const TextfieldPasswordWidget(
               hinText: "Senha",
-              isSignup: false,
+              isConfirm: true,
             ),
           ),
-          const SizedBox(height: 20.0),
-          SizedBox(
-            width: widget.width * 0.8,
-            child: const TextfieldPasswordWidget(
-              hinText: "Repetir Senha",
-              isSignup: false,
-            ),
-          ),
-          const SizedBox(height: 50.0),
+          const SizedBox(height: 70.0),
           SizedBox(
             width: widget.width * 0.8,
             child: TextfieldButtonWidget(
