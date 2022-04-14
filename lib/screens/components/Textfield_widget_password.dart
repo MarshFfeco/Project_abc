@@ -5,7 +5,12 @@ import '../../values/Custom_color.dart';
 class TextfieldPasswordWidget extends StatefulWidget {
   const TextfieldPasswordWidget({
     Key? key,
+    required this.hinText,
+    required this.isSignup,
   }) : super(key: key);
+
+  final String hinText;
+  final isSignup;
 
   @override
   State<TextfieldPasswordWidget> createState() =>
@@ -13,8 +18,8 @@ class TextfieldPasswordWidget extends StatefulWidget {
 }
 
 class _TextfieldPasswordWidgetState extends State<TextfieldPasswordWidget> {
+  final TextEditingController _pass = TextEditingController();
   bool _securityText = true;
-  bool isShadow = true;
 
   set setSecurityText(bool securityText) {
     _securityText = securityText;
@@ -27,50 +32,51 @@ class _TextfieldPasswordWidgetState extends State<TextfieldPasswordWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: isShadow
-          ? const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                  )
-                ])
-          : const BoxDecoration(),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+            )
+          ]),
       child: TextFormField(
+        controller: widget.isSignup ? _pass : null,
         keyboardType: TextInputType.visiblePassword,
         obscureText: getSecuritytext,
         decoration: InputDecoration(
-          hintText: 'Senha',
+          contentPadding: const EdgeInsets.all(20.0),
+          hintText: widget.hinText,
           hintStyle: TextStyle(color: CustomColor().getCorPadraoAzul),
-          contentPadding: const EdgeInsets.all(10),
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
+          errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.redAccent),
+              borderRadius: BorderRadius.circular(30)),
+          focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.redAccent),
+              borderRadius: BorderRadius.circular(30)),
           filled: true,
           fillColor: Colors.white,
           prefixIcon: Icon(
             Icons.key,
             color: CustomColor().getCorPadraoAzul,
           ),
-          suffix: IconButton(
-            icon:
-                Icon(getSecuritytext ? Icons.visibility_off : Icons.visibility),
+          suffixIcon: IconButton(
+            icon: Icon(
+              getSecuritytext ? Icons.visibility_off : Icons.visibility,
+              color: CustomColor().getCorPadraoAzul,
+            ),
             onPressed: () => setState(() => setSecurityText = !getSecuritytext),
           ),
         ),
+        //TODO
         validator: (value) {
           if (value == null || value.isEmpty) {
-            isShadow = false;
             return "Digite sua senha";
           }
           return null;

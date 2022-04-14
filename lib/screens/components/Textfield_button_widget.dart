@@ -1,6 +1,5 @@
+import 'package:fadba/screens/SignUp/Signup_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../../values/Custom_color.dart';
 
 class TextfieldButtonWidget extends StatelessWidget {
   const TextfieldButtonWidget(
@@ -9,13 +8,17 @@ class TextfieldButtonWidget extends StatelessWidget {
       required this.formKey,
       required this.nameButton,
       required this.isFill,
-      required this.padromColor})
+      required this.padromColor,
+      required this.isButtonPage,
+      required this.isBVPage})
       : super(key: key);
 
   final width;
   final formKey;
   final bool isFill;
   final Color padromColor;
+  final bool isButtonPage;
+  final bool isBVPage;
 
   final String nameButton;
 
@@ -26,7 +29,7 @@ class TextfieldButtonWidget extends StatelessWidget {
         primary: isFill ? Colors.white : padromColor,
         onPrimary: isFill ? padromColor : Colors.white,
         textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        minimumSize: Size(width * 0.8, 70),
+        minimumSize: Size(width, 100),
         shape: isFill
             ? StadiumBorder(
                 side: BorderSide(
@@ -37,10 +40,22 @@ class TextfieldButtonWidget extends StatelessWidget {
             : const StadiumBorder(),
       ),
       onPressed: () {
-        if (formKey.currentState!.validate()) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Processando informações')),
-          );
+        if (isButtonPage) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SignUpScreen()));
+        } else if (isButtonPage == false && isBVPage == false) {
+          if (formKey.currentState!.validate()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Processando informações')),
+            );
+          }
+        } else if (isBVPage) {
+          if (formKey.currentState!.validate()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Cadastro realizado com sucesso')),
+            );
+            Navigator.pop(context);
+          }
         }
       },
       child: Text(nameButton),
